@@ -38,7 +38,9 @@ fn thread(COLOR: def.COL) void {
     }
     var j: u8 = 0;
     while (j < UsedCore) {
-        thr.join(ThreadArray[j]);
+        if (@TypeOf(ThreadArray[i]) == @TypeOf(thr)) {
+            thr.join(ThreadArray[j]);
+        }
         i += 1;
     }
 }
