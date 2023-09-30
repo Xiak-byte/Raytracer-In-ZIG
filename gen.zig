@@ -7,7 +7,7 @@ const sto = @import("std").io.getStdOut().writer();
 const thr = @import("std").Thread;
 const alloc = @import("std").heap.page_allocator;
 
-const MAX_THREADS: u8 = 128;
+const MAX_CORE: usize = 128;
 const AspectRatio: f32 = 16.0 / 9.0;
 const WIDTH: u32 = 900;
 pub const ImageProperties: def.IMG = img.PropIMG(WIDTH, AspectRatio);
@@ -26,8 +26,8 @@ fn thread(COLOR: def.COL) void {
     const SpawnConfig = thr.SpawnConfig{
         .stack_size = 4096,
     };
+    var ThreadArray: [MAX_CORE]thr = undefined;
     var i: usize = 0;
-    var ThreadArray: [MAX_THREADS]thr = undefined;
     while (i < UsedCore) {
         var ThreadArrayERR = thr.spawn(SpawnConfig, col.color, .{COLOR});
         ThreadArray[i] = ThreadArrayERR catch |err| {
@@ -36,12 +36,10 @@ fn thread(COLOR: def.COL) void {
         };
         i += 1;
     }
-    var j: usize = 0;
-    while (j < UsedCore) {
-        if (@TypeOf(ThreadArray[j]) == @TypeOf(thr)) {
-            thr.join(ThreadArray[j]);
+    for (ThreadArray) |joinThread| {
+        if (@TypeOf(joinThread) == @TypeOf(thr)) {
+            defer thr.join(joinThread);
         }
-        j += 1;
     }
 }
 
