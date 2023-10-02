@@ -11,17 +11,6 @@ pub const P3D = struct {
     Z: f32,
 };
 
-pub const COL = struct {
-    R: u8,
-    G: u8,
-    B: u8,
-};
-
-pub const CAM = struct {
-    POS: P3D,
-    VEC: P3D,
-};
-
 pub const RAY = struct {
     POS: P3D,
     DIR: P3D,
@@ -30,5 +19,5 @@ pub const RAY = struct {
 pub const SPR = struct {
     POS: P3D,
     RAD: f32,
-    COL: COL,
+    COL: P3D,
 };

@@ -3,7 +3,11 @@ const def = @import("def.zig");
 const alloc = @import("std").heap.page_allocator;
 
 pub fn New(X: f32, Y: f32, Z: f32) *def.P3D {
-    var NewP: *def.P3D = try alloc.create(def.P3D);
+    var NewP: *def.P3D = alloc.create(def.P3D) catch |err| {
+        std.debug.print("EROOR ALLOCATING NEW VECTOR => {}\n", .{err});
+        var PERR = def.P3D{ .X = 0, .Y = 0, .Z = 0 };
+        return &PERR;
+    };
     NewP.*.X = X;
     NewP.*.Y = Y;
     NewP.*.Z = Z;
@@ -24,7 +28,7 @@ pub fn Add(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z + I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n");
+            std.debug.print("Not a compatible type\n", .{});
         },
     }
     return ReturnP;
@@ -44,7 +48,7 @@ pub fn Sub(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z - I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n");
+            std.debug.print("Not a compatible type\n", .{});
         },
     }
     return ReturnP;
@@ -64,7 +68,7 @@ pub fn Mul(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z * I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n");
+            std.debug.print("Not a compatible type\n", .{});
         },
     }
     return ReturnP;
@@ -84,7 +88,7 @@ pub fn Div(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z / I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n");
+            std.debug.print("Not a compatible type\n", .{});
         },
     }
     return ReturnP;

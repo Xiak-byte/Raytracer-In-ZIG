@@ -1,14 +1,8 @@
 const std = @import("std");
 const def = @import("def.zig");
+const gen = @import("gen.zig");
 
-var PosCam = def.P3D{ .X = 0, .Y = 1, .Z = 10 };
-var VecCam = def.P3D{ .X = 0, .Y = 3, .Z = 0 };
-
-pub var CAMERA = def.CAM{
-    .POS = PosCam,
-    .VEC = VecCam,
-};
-
+pub var CAMERA = gen.CAMERA;
 pub var LIGHT = def.P3D{ .X = -30, .Y = -10, .Z = 20 };
 
 var PosSphere = def.P3D{ .X = -10, .Y = 0, .Z = 1 };
