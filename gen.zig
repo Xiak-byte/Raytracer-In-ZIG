@@ -22,8 +22,9 @@ const PIXEL_GRID_H = def.P3D{ .X = 0, .Y = 0, .Z = -1 };
 
 pub fn CamToPixel(R: *def.P3D, I: def.P3D) def.P3D {
     const Ray = pop.Add(R.*, I);
-    const ColorModifier = pop.Div(Ray, 100.0);
-    const Color = pop.Mul(COLOR, ColorModifier);
+    const DIVISOR: f32 = 10000000;
+    const ColorModifier = (Ray.X + Ray.Y + Ray.Z) / DIVISOR;
+    const Color = pop.Div(COLOR, ColorModifier);
     return Color;
 }
 
@@ -38,9 +39,10 @@ pub fn render() void {
         std.debug.print("ScanLines remaining {}/{}\n", .{ (ImageProperties.HEIGHT - i), ImageProperties.HEIGHT });
         while (j < ImageProperties.WIDTH) {
             col.color(CamToPixel(&CAMERA.DIR, PIXEL_GRID_W));
+            CAMERA.DIR = pop.Add(CAMERA.DIR, PIXEL_GRID_W);
             j += 1;
         }
-        _ = CamToPixel(&CAMERA.DIR, PIXEL_GRID_H);
+        CAMERA.DIR = pop.Add(CAMERA.DIR, PIXEL_GRID_H);
         j = 0;
         i += 1;
     }

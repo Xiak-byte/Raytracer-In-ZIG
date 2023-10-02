@@ -28,7 +28,7 @@ pub fn Add(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z + I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n", .{});
+            std.debug.print("Not a compatible ADD type\n", .{});
         },
     }
     return ReturnP;
@@ -48,7 +48,7 @@ pub fn Sub(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z - I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n", .{});
+            std.debug.print("Not a compatible SUB type\n", .{});
         },
     }
     return ReturnP;
@@ -68,7 +68,7 @@ pub fn Mul(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z * I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n", .{});
+            std.debug.print("Not a compatible MUL type\n", .{});
         },
     }
     return ReturnP;
@@ -88,7 +88,7 @@ pub fn Div(P: def.P3D, I: anytype) def.P3D {
             ReturnP.Z = P.Z / I.Z;
         },
         else => {
-            std.debug.print("Not a compatible type\n", .{});
+            std.debug.print("Not a compatible DIV type\n", .{});
         },
     }
     return ReturnP;
