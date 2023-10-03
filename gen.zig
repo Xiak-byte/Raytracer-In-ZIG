@@ -18,7 +18,7 @@ pub var CAMERA = def.RAY{
     .DIR = def.P3D{ .X = @as(f64, WIDTH) / 2.0, .Y = @as(f64, ImageProperties.HEIGHT) / 2.0, .Z = 0 },
 };
 const PIXEL_GRID_W = def.P3D{ .X = 0, .Y = 1, .Z = 0 };
-const PIXEL_GRID_H = def.P3D{ .X = 0, .Y = 0, .Z = -1 };
+const PIXEL_GRID_H = def.P3D{ .X = 0, .Y = 0, .Z = 1 };
 
 pub fn render() void {
     //file head
@@ -38,7 +38,7 @@ pub fn render() void {
             CAMERA.DIR = pop.Add(CAMERA.DIR, PIXEL_GRID_W);
             j += 1;
         }
-        CAMERA.DIR = pop.Add(CAMERA.DIR, PIXEL_GRID_H);
+        CAMERA.DIR = pop.Sub(CAMERA.DIR, PIXEL_GRID_H);
         j = 0;
         i += 1;
     }
