@@ -17,7 +17,7 @@ pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 10, .Z = 0 },
     .DIR = def.P3D{ .X = -@as(f64, WIDTH) / 2.0, .Y = @as(f64, ImageProperties.HEIGHT) / 2.0, .Z = 100 },
 };
-const FOV: f32 = 60;
+const FOV: f32 = 120;
 const FOV_RAD: f32 = FOV * (std.math.pi / 180.0);
 const STEP: f32 = 2.0 * std.math.tan(FOV_RAD / 2.0) / @as(f32, ImageProperties.WIDTH);
 const PIXEL_GRID_W = def.P3D{ .X = STEP, .Y = 0, .Z = 0 };
@@ -41,6 +41,8 @@ pub fn render() void {
             CAMERA.DIR = pop.Add(CAMERA.DIR, PIXEL_GRID_W);
             j += 1;
         }
+
+        CAMERA.DIR = def.P3D{ .X = -@as(f64, WIDTH) / 2.0, .Y = @as(f64, ImageProperties.HEIGHT) / 2.0, .Z = 100 };
         CAMERA.DIR = pop.Sub(CAMERA.DIR, PIXEL_GRID_H);
         j = 0;
         i += 1;
