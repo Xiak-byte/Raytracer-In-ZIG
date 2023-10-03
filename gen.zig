@@ -38,7 +38,11 @@ pub fn render() void {
     while (i < ImageProperties.HEIGHT) {
         std.debug.print("ScanLines remaining {}/{}\n", .{ (ImageProperties.HEIGHT - i), ImageProperties.HEIGHT });
         while (j < ImageProperties.WIDTH) {
-            col.color(CamToPixel(&CAMERA.DIR, PIXEL_GRID_W));
+            if (scn.IntersectSphere(CAMERA, scn.SPHERE)) {
+                col.color(scn.SPHERE.COL);
+            } else {
+                col.color(COLOR);
+            }
             CAMERA.DIR = pop.Add(CAMERA.DIR, PIXEL_GRID_W);
             j += 1;
         }
