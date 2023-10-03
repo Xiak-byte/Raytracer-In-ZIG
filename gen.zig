@@ -15,18 +15,10 @@ const WIDTH: u32 = 900;
 pub const ImageProperties: def.IMG = img.PropIMG(WIDTH, AspectRatio);
 pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 0, .Z = 10 },
-    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
+    .DIR = def.P3D{ .X = @as(f64, WIDTH) / 2.0, .Y = @as(f64, ImageProperties.HEIGHT) / 2.0, .Z = 0 },
 };
 const PIXEL_GRID_W = def.P3D{ .X = 0, .Y = 1, .Z = 0 };
 const PIXEL_GRID_H = def.P3D{ .X = 0, .Y = 0, .Z = -1 };
-
-pub fn CamToPixel(R: *def.P3D, I: def.P3D) def.P3D {
-    const Ray = pop.Add(R.*, I);
-    const DIVISOR: f32 = 10000000;
-    const ColorModifier = (Ray.X + Ray.Y + Ray.Z) / DIVISOR;
-    const Color = pop.Div(COLOR, ColorModifier);
-    return Color;
-}
 
 pub fn render() void {
     //file head
