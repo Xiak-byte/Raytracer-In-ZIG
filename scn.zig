@@ -7,7 +7,7 @@ pub var CAMERA = gen.CAMERA;
 pub var LIGHT = def.P3D{ .X = -30, .Y = -10, .Z = 20 };
 pub var SPHERE = def.SPR{
     .RAD = 0.3,
-    .POS = def.P3D{ .X = 0, .Y = 0, .Z = 5 },
+    .POS = def.P3D{ .X = 0.7, .Y = 0.7, .Z = 10 },
     .COL = def.P3D{ .X = 255, .Y = 255, .Z = 0 },
 };
 
@@ -19,10 +19,8 @@ pub fn IntersectSphere(ray: def.RAY, sphere: def.SPR) bool {
     const discriminant = b * b - 4 * a * c;
 
     if (discriminant > 0) {
-        std.debug.print("INTERSECTION !\n", .{});
         return true;
     } else {
-        std.debug.print("YOUSK2 !\n", .{});
         return false;
     }
 }
