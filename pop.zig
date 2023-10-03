@@ -15,7 +15,7 @@ pub fn New(X: f32, Y: f32, Z: f32) *def.P3D {
 }
 
 pub fn Add(P: def.P3D, I: anytype) def.P3D {
-    var ReturnP = New(0, 0, 0).*;
+    var ReturnP = def.P3D{ .X = 0, .Y = 0, .Z = 0 };
     switch (@TypeOf(I)) {
         f32 => {
             ReturnP.X = P.X + I;
@@ -35,7 +35,7 @@ pub fn Add(P: def.P3D, I: anytype) def.P3D {
 }
 
 pub fn Sub(P: def.P3D, I: anytype) def.P3D {
-    var ReturnP = New(0, 0, 0).*;
+    var ReturnP = def.P3D{ .X = 0, .Y = 0, .Z = 0 };
     switch (@TypeOf(I)) {
         f32 => {
             ReturnP.X = P.X - I;
@@ -55,7 +55,7 @@ pub fn Sub(P: def.P3D, I: anytype) def.P3D {
 }
 
 pub fn Mul(P: def.P3D, I: anytype) def.P3D {
-    var ReturnP = New(0, 0, 0).*;
+    var ReturnP = def.P3D{ .X = 0, .Y = 0, .Z = 0 };
     switch (@TypeOf(I)) {
         f32 => {
             ReturnP.X = P.X * I;
@@ -75,7 +75,7 @@ pub fn Mul(P: def.P3D, I: anytype) def.P3D {
 }
 
 pub fn Div(P: def.P3D, I: anytype) def.P3D {
-    var ReturnP = New(0, 0, 0).*;
+    var ReturnP = def.P3D{ .X = 0, .Y = 0, .Z = 0 };
     switch (@TypeOf(I)) {
         f32 => {
             ReturnP.X = P.X / I;
@@ -110,5 +110,6 @@ pub fn Cross(P1: def.P3D, P2: def.P3D) def.P3D {
     var X: f32 = P1.Y * P2.Z - P1.Z * P2.Y;
     var Y: f32 = P1.Z * P2.X - P1.X * P2.Z;
     var Z: f32 = P1.X * P2.Y - P1.Y * P2.X;
-    return New(X, Y, Z);
+    var ReturnP = def.P3D{ .X = X, .Y = Y, .Z = Z };
+    return ReturnP;
 }
