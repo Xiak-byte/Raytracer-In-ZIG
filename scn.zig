@@ -6,8 +6,8 @@ const pop = @import("pop.zig");
 pub var CAMERA = gen.CAMERA;
 pub var LIGHT = def.P3D{ .X = -30, .Y = -10, .Z = 20 };
 pub var SPHERE = def.SPR{
-    .RAD = 3,
-    .POS = def.P3D{ .X = 2, .Y = 10, .Z = 2 },
+    .RAD = 2,
+    .POS = def.P3D{ .X = 0, .Y = 10, .Z = 5 },
     .COL = def.P3D{ .X = 255, .Y = 255, .Z = 0 },
 };
 
