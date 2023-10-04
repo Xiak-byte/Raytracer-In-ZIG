@@ -8,7 +8,8 @@ const sto = @import("std").io.getStdOut().writer();
 const thr = @import("std").Thread;
 const alloc = @import("std").heap.page_allocator;
 
-const COLOR = def.P3D{ .X = 123, .Y = 89, .Z = 224 };
+//const COLOR = def.P3D{ .X = 123, .Y = 89, .Z = 224 };
+const COLOR = def.P3D{ .X = 255, .Y = 255, .Z = 255 };
 const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
 const AspectRatio: f32 = 16.0 / 9.0;
 const WIDTH: u32 = 256;
