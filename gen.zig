@@ -30,16 +30,12 @@ pub fn render() void {
     while (i < ImageProperties.HEIGHT) {
         std.debug.print("ScanLines remaining {}/{}\n", .{ (ImageProperties.HEIGHT - i), ImageProperties.HEIGHT });
         while (j < ImageProperties.WIDTH) {
-            var k: f32 = 0;
             var R: def.RAY = CAMERA;
             R.DIR.X += @floatFromInt(j);
             R.DIR.Y += @floatFromInt(i);
-            while (k < 100) {
-                if (ray.SphereIntersectionRay(SPHERE, R)) {
-                    col.color(COLOR_SPHERE);
-                    break;
-                }
-                R.DIR.Z += 1;
+            if (ray.SphereIntersectionRay(SPHERE, R)) {
+                col.color(COLOR_SPHERE);
+            } else {
                 col.color(COLOR);
             }
             j += 1;
