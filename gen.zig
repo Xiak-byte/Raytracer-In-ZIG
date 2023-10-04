@@ -17,8 +17,8 @@ pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 10, .Z = 0 },
     .DIR = def.P3D{ .X = -@as(f64, WIDTH) / 2.0, .Y = @as(f64, ImageProperties.HEIGHT) / 2.0, .Z = 0 },
 };
-const SPHERE_POS = def.P3D{ .X = 0, .Y = 5, .Z = 50 };
-const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 1 };
+const SPHERE_POS = def.P3D{ .X = 0, .Y = 10, .Z = 2 };
+const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 0.2 };
 
 pub fn render() void {
     //file head
@@ -33,7 +33,7 @@ pub fn render() void {
             var R: def.RAY = CAMERA;
             R.DIR.X += @floatFromInt(j);
             R.DIR.Y += @floatFromInt(i);
-            if (ray.SphereRayIntersection(SPHERE, R)) {
+            if (ray.SphereIntersectionRay(SPHERE, R)) {
                 col.color(COLOR_SPHERE);
             } else {
                 col.color(COLOR);
