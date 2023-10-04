@@ -8,8 +8,7 @@ const sto = @import("std").io.getStdOut().writer();
 const thr = @import("std").Thread;
 const alloc = @import("std").heap.page_allocator;
 
-//const COLOR = def.P3D{ .X = 123, .Y = 89, .Z = 224 };
-const COLOR = def.P3D{ .X = 255, .Y = 255, .Z = 255 };
+const COLOR = def.P3D{ .X = 123, .Y = 89, .Z = 224 };
 const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
 const AspectRatio: f32 = 16.0 / 9.0;
 const WIDTH: u32 = 256;
@@ -18,7 +17,7 @@ pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 10, .Z = 0 },
     .DIR = def.P3D{ .X = -@as(f64, WIDTH) / 2.0, .Y = @as(f64, ImageProperties.HEIGHT) / 2.0, .Z = 0 },
 };
-const SPHERE_POS = def.P3D{ .X = 0, .Y = 10, .Z = 20 };
+const SPHERE_POS = def.P3D{ .X = 0, .Y = 10, .Z = 2 };
 const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 2 };
 
 pub fn render() void {
