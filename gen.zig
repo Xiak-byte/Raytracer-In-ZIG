@@ -4,7 +4,7 @@ const ray = @import("ray.zig");
 const sto = @import("std").io.getStdOut().writer();
 
 //some important variable
-const COLOR = def.P3D{ .X = 123, .Y = 89, .Z = 224 };
+var COLOR = def.P3D{ .X = 89, .Y = 79, .Z = 245 };
 const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
 const AspectRatio: f32 = 16.0 / 9.0;
 const WIDTH: u32 = 256;
@@ -25,8 +25,8 @@ pub var CAMERA = def.RAY{
 };
 
 //sphere position, radius and color
-const SPHERE_POS = def.P3D{ .X = 0, .Y = 0, .Z = 5 };
-const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 2 };
+const SPHERE_POS = def.P3D{ .X = 2, .Y = 4, .Z = 5 };
+const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 3 };
 
 //function to print the current pixel color
 fn color(Color: def.P3D) void {
@@ -54,12 +54,22 @@ pub fn render() void {
             R.DIR.X += @floatFromInt(j);
             R.DIR.Y += @floatFromInt(i);
             //check for intersection
-            if (ray.SphereIntersectionRay(SPHERE, R)) {
-                color(SPHERE.COL);
-            } else {
-                color(COLOR);
+            var k: bool = true;
+            var c: u8 = 0;
+            while (k) {
+                R.DIR.Z += 1;
+                if (ray.SphereIntersectionRay(SPHERE, R)) {
+                    color(SPHERE.COL);
+                    k = false;
+                }
+                if (c > 100) {
+                    color(COLOR);
+                    k = false;
+                }
+                c += 1;
             }
             j += 1;
+            R = CAMERA;
         }
         j = 0;
         i += 1;
