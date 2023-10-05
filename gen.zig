@@ -1,8 +1,5 @@
 const std = @import("std");
 const def = @import("def.zig");
-const img = @import("img.zig");
-const col = @import("col.zig");
-const pop = @import("pop.zig");
 const ray = @import("ray.zig");
 const sto = @import("std").io.getStdOut().writer();
 const thr = @import("std").Thread;
@@ -12,13 +9,29 @@ const COLOR = def.P3D{ .X = 123, .Y = 89, .Z = 224 };
 const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
 const AspectRatio: f32 = 16.0 / 9.0;
 const WIDTH: u32 = 256;
-pub const ImageProperties: def.IMG = img.PropIMG(WIDTH, AspectRatio);
+
+fn PropIMG(W: u32, ASPECT_RATIO: f32) def.IMG {
+    var HEIGHT: u32 = @intFromFloat(@as(f32, W) / ASPECT_RATIO);
+    var ImgPropreties = def.IMG{ .WIDTH = W, .HEIGHT = HEIGHT };
+    return ImgPropreties;
+}
+
+const ImageProperties: def.IMG = PropIMG(WIDTH, AspectRatio);
 pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 10, .Z = 0 },
-    .DIR = def.P3D{ .X = -@as(f64, WIDTH) / 2.0, .Y = @as(f64, ImageProperties.HEIGHT) / 2.0, .Z = 0 },
+    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
 };
 const SPHERE_POS = def.P3D{ .X = 0, .Y = 10, .Z = 2 };
 const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 2 };
+
+fn color(Color: def.P3D) void {
+    var R: usize = @intFromFloat(Color.X);
+    var G: usize = @intFromFloat(Color.Y);
+    var B: usize = @intFromFloat(Color.Z);
+    sto.print("{d} {d} {d}\n", .{ R, G, B }) catch |err| {
+        std.debug.print("Oops, there seems to be an error... {}\n", .{err});
+    };
+}
 
 pub fn render() void {
     //file head
@@ -34,9 +47,9 @@ pub fn render() void {
             R.DIR.X += @floatFromInt(j);
             R.DIR.Y += @floatFromInt(i);
             if (ray.SphereIntersectionRay(SPHERE, R)) {
-                col.color(COLOR_SPHERE);
+                color(COLOR_SPHERE);
             } else {
-                col.color(COLOR);
+                color(COLOR);
             }
             j += 1;
         }
