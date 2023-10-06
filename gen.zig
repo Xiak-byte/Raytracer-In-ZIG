@@ -21,7 +21,7 @@ const ImageProperties: def.IMG = PropIMG(WIDTH, AspectRatio);
 //camera position and direction
 pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
-    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 20 },
+    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 30 },
 };
 
 //sphere position, radius and color
