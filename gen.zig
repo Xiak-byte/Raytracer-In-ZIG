@@ -21,11 +21,11 @@ const ImageProperties: def.IMG = PropIMG(WIDTH, AspectRatio);
 //camera position and direction
 pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
-    .DIR = def.P3D{ .X = -@as(f32, ImageProperties.WIDTH) / 2, .Y = @as(f32, ImageProperties.HEIGHT) / 2, .Z = 0 },
+    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
 };
 
 //sphere position, radius and color
-const SPHERE_POS = def.P3D{ .X = 2, .Y = 4, .Z = 5 };
+const SPHERE_POS = def.P3D{ .X = 0, .Y = 0, .Z = 5 };
 const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 3 };
 
 //function to print the current pixel color
