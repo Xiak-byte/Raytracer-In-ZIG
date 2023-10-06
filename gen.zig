@@ -7,7 +7,7 @@ const sto = @import("std").io.getStdOut().writer();
 var COLOR = def.P3D{ .X = 89, .Y = 79, .Z = 245 };
 const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
 const AspectRatio: f32 = 16.0 / 9.0;
-const WIDTH: i64 = 512;
+const WIDTH: i64 = 256;
 
 //image properties, height, width
 fn PropIMG(W: i64, ASPECT_RATIO: f32) def.IMG {
@@ -21,12 +21,12 @@ const ImageProperties: def.IMG = PropIMG(WIDTH, AspectRatio);
 //camera position and direction
 pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
-    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
+    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 1 },
 };
 
 //sphere position, radius and color
-const SPHERE_POS = def.P3D{ .X = 0, .Y = 0, .Z = 5 };
-const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 3 };
+const SPHERE_POS = def.P3D{ .X = 0, .Y = 0, .Z = 2 };
+const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 1 };
 
 //function to print the current pixel color
 fn color(Color: def.P3D) void {
@@ -54,19 +54,11 @@ pub fn render() void {
             R.DIR.X += @floatFromInt(j - (ImageProperties.WIDTH / 2));
             R.DIR.Y += @floatFromInt((ImageProperties.HEIGHT / 2) - i);
             //check for intersection
-            var k: bool = true;
-            var c: u8 = 0;
-            while (k) {
-                R.DIR.Z += 1;
-                if (ray.SphereIntersectionRay(SPHERE, R)) {
-                    color(SPHERE.COL);
-                    k = false;
-                }
-                if (c > 100) {
-                    color(COLOR);
-                    k = false;
-                }
-                c += 1;
+            R.DIR.Z += 1;
+            if (ray.SphereIntersectionRay(SPHERE, R)) {
+                color(SPHERE.COL);
+            } else {
+                color(COLOR);
             }
             j += 1;
             R = CAMERA;
