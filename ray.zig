@@ -4,7 +4,7 @@ const pop = @import("pop.zig");
 
 pub fn SphereIntersectionRay(sphere: def.SPR, R: def.RAY) bool {
     const a: f32 = pop.Dot(R.DIR, R.DIR);
-    const v: def.P3D = pop.Sub(sphere.POS, R.POS);
+    const v: def.P3D = pop.Sub(R.POS, sphere.POS);
     const b: f32 = 2.0 * pop.Dot(v, R.DIR);
     const c: f32 = pop.Dot(v, v) - sphere.RAD * sphere.RAD;
 

@@ -7,11 +7,11 @@ const sto = @import("std").io.getStdOut().writer();
 var COLOR = def.P3D{ .X = 89, .Y = 79, .Z = 245 };
 const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
 const AspectRatio: f32 = 16.0 / 9.0;
-const WIDTH: u32 = 256;
+const WIDTH: i64 = 512;
 
 //image properties, height, width
-fn PropIMG(W: u32, ASPECT_RATIO: f32) def.IMG {
-    var HEIGHT: u32 = @intFromFloat(@as(f32, W) / ASPECT_RATIO);
+fn PropIMG(W: i64, ASPECT_RATIO: f32) def.IMG {
+    var HEIGHT: i64 = @intFromFloat(@as(f32, W) / ASPECT_RATIO);
     var ImgPropreties = def.IMG{ .WIDTH = W, .HEIGHT = HEIGHT };
     return ImgPropreties;
 }
@@ -45,14 +45,14 @@ pub fn render() void {
         std.debug.print("Oops, there seems to be an error... {}\n", .{err});
     };
     //loop to iterate over each pixels
-    var i: u32 = 0;
-    var j: u32 = 0;
+    var i: i64 = 0;
+    var j: i64 = 0;
     while (i < ImageProperties.HEIGHT) {
         std.debug.print("ScanLines remaining {}/{}\n", .{ (ImageProperties.HEIGHT - i), ImageProperties.HEIGHT });
         while (j < ImageProperties.WIDTH) {
             var R: def.RAY = CAMERA;
-            R.DIR.X += @floatFromInt(j);
-            R.DIR.Y += @floatFromInt(i);
+            R.DIR.X += @floatFromInt(j - (ImageProperties.WIDTH / 2));
+            R.DIR.Y += @floatFromInt((ImageProperties.HEIGHT / 2) - i);
             //check for intersection
             var k: bool = true;
             var c: u8 = 0;
