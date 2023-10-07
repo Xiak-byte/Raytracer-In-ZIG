@@ -1,10 +1,13 @@
 const std = @import("std");
 const def = @import("def.zig");
 const ray = @import("ray.zig");
+const pop = @import("pop.zig");
 const sto = @import("std").io.getStdOut().writer();
 
 //some important variable
-var COLOR = def.P3D{ .X = 89, .Y = 79, .Z = 245 };
+const BLACK = def.P3D{ .X = 0, .Y = 0, .Z = 0 };
+var COLOR = def.P3D{ .X = 50, .Y = 50, .Z = 245 };
+const YELLOWSHADOW: f32 = 3.0;
 const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
 const AspectRatio: f32 = 16.0 / 9.0;
 const WIDTH: i64 = 512;
@@ -21,12 +24,14 @@ const ImageProperties: def.IMG = PropIMG(WIDTH, AspectRatio);
 //camera position and direction
 pub var CAMERA = def.RAY{
     .POS = def.P3D{ .X = 0, .Y = 0, .Z = 0 },
-    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 30 },
+    .DIR = def.P3D{ .X = 0, .Y = 0, .Z = 100 },
 };
 
 //sphere position, radius and color
 const SPHERE_POS = def.P3D{ .X = 0, .Y = 0, .Z = 9 };
-const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 8 };
+const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 6 };
+
+const LIGHT = def.P3D{ .X = 10, .Y = 30, .Z = 50 };
 
 //function to print the current pixel color
 fn color(Color: def.P3D) void {
@@ -54,13 +59,28 @@ pub fn render() void {
             R.DIR.X += @floatFromInt(j - (ImageProperties.WIDTH / 2));
             R.DIR.Y += @floatFromInt((ImageProperties.HEIGHT / 2) - i);
             //check for intersection
-            if (ray.SphereIntersectionRay(SPHERE, R)) {
-                color(SPHERE.COL);
+            const IntersectionPosition = def.P3D{ .X = R.DIR.X, .Y = R.DIR.Y, .Z = ray.SphereIntersectionRay(SPHERE, R) };
+            if (IntersectionPosition.Z >= 0) {
+                const ShadowRay = def.RAY{ .POS = IntersectionPosition, .DIR = LIGHT };
+                if (ray.Shadow(ShadowRay, SPHERE)) {
+                    color(pop.Div(COLOR_SPHERE, YELLOWSHADOW));
+                } else {
+                    color(SPHERE.COL);
+                }
             } else {
                 color(COLOR);
             }
             j += 1;
             R = CAMERA;
+        }
+        if (COLOR.X < 255) {
+            COLOR.X += 1;
+        }
+        if (COLOR.Y < 255) {
+            COLOR.Y += 1;
+        }
+        if (COLOR.Z < 255) {
+            COLOR.Z += 1;
         }
         j = 0;
         i += 1;
