@@ -6,9 +6,10 @@ const sto = @import("std").io.getStdOut().writer();
 
 //some important variable
 const BLACK = def.P3D{ .X = 0, .Y = 0, .Z = 0 };
-var COLOR = def.P3D{ .X = 50, .Y = 50, .Z = 245 };
-const YELLOWSHADOW: f32 = 3.0;
-const COLOR_SPHERE = def.P3D{ .X = 255, .Y = 255, .Z = 0 };
+var COLOR = def.P3D{ .X = 92, .Y = 252, .Z = 0 };
+const SHADOW: f32 = 3.0;
+const COLOR_SPHERE = def.P3D{ .X = 252, .Y = 134, .Z = 0 };
+const COLOR_SPHERE2 = def.P3D{ .X = 255, .Y = 0, .Z = 255 };
 const AspectRatio: f32 = 16.0 / 9.0;
 const WIDTH: i64 = 512;
 
@@ -28,10 +29,13 @@ pub var CAMERA = def.RAY{
 };
 
 //sphere position, radius and color
-const SPHERE_POS = def.P3D{ .X = 0, .Y = 0, .Z = 9 };
-const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 6 };
+const SPHERE_POS = def.P3D{ .X = 0, .Y = 0, .Z = 2 };
+const SPHERE = def.SPR{ .COL = COLOR_SPHERE, .POS = SPHERE_POS, .RAD = 40 };
 
-const LIGHT = def.P3D{ .X = 10, .Y = 30, .Z = 50 };
+const SPHERE_POS2 = def.P3D{ .X = -3, .Y = 2, .Z = 3 };
+const SPHERE2 = def.SPR{ .COL = COLOR_SPHERE2, .POS = SPHERE_POS2, .RAD = 22 };
+
+const LIGHT = def.P3D{ .X = 10, .Y = 23, .Z = 10 };
 
 //function to print the current pixel color
 fn color(Color: def.P3D) void {
@@ -56,14 +60,24 @@ pub fn render() void {
         std.debug.print("ScanLines remaining {}/{}\n", .{ (ImageProperties.HEIGHT - i), ImageProperties.HEIGHT });
         while (j < ImageProperties.WIDTH) {
             var R: def.RAY = CAMERA;
-            R.DIR.X += @floatFromInt(j - (ImageProperties.WIDTH / 2));
-            R.DIR.Y += @floatFromInt((ImageProperties.HEIGHT / 2) - i);
+            R.POS.X += @floatFromInt(j - (ImageProperties.WIDTH / 2));
+            R.POS.Y += @floatFromInt((ImageProperties.HEIGHT / 2) - i);
             //check for intersection
             const IntersectionPosition = def.P3D{ .X = R.DIR.X, .Y = R.DIR.Y, .Z = ray.SphereIntersectionRay(SPHERE, R) };
-            if (IntersectionPosition.Z >= 0) {
+            const IntersectionPositionSmall = def.P3D{ .X = R.DIR.X, .Y = R.DIR.Y, .Z = ray.SphereIntersectionRay(SPHERE2, R) };
+            if (IntersectionPositionSmall.Z >= 0) {
+                //const ShadowRay = def.RAY{ .POS = pop.Add(IntersectionPosition, pop.Sub(LIGHT, IntersectionPosition)), .DIR = LIGHT };
+                const ShadowRay = def.RAY{ .POS = IntersectionPositionSmall, .DIR = LIGHT };
+                if (ray.Shadow(ShadowRay, SPHERE2)) {
+                    color(pop.Div(COLOR_SPHERE2, SHADOW));
+                } else {
+                    color(SPHERE2.COL);
+                }
+            } else if (IntersectionPosition.Z >= 0) {
+                //const ShadowRay = def.RAY{ .POS = pop.Add(IntersectionPosition, pop.Sub(LIGHT, IntersectionPosition)), .DIR = LIGHT };
                 const ShadowRay = def.RAY{ .POS = IntersectionPosition, .DIR = LIGHT };
                 if (ray.Shadow(ShadowRay, SPHERE)) {
-                    color(pop.Div(COLOR_SPHERE, YELLOWSHADOW));
+                    color(pop.Div(COLOR_SPHERE, SHADOW));
                 } else {
                     color(SPHERE.COL);
                 }
@@ -72,15 +86,6 @@ pub fn render() void {
             }
             j += 1;
             R = CAMERA;
-        }
-        if (COLOR.X < 255) {
-            COLOR.X += 1;
-        }
-        if (COLOR.Y < 255) {
-            COLOR.Y += 1;
-        }
-        if (COLOR.Z < 255) {
-            COLOR.Z += 1;
         }
         j = 0;
         i += 1;
